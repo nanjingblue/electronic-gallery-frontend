@@ -1,10 +1,15 @@
 <template>
-  <header class="header">
-    <NavBar />
-  </header>
-  <TheLayout>
+  <template v-if="$route.name !== 'login'">
+    <header class="header">
+      <NavBar />
+    </header>
+    <TheLayout>
+      <router-view></router-view>
+    </TheLayout>
+  </template>
+  <template v-else>
     <router-view></router-view>
-  </TheLayout>
+  </template>
 </template>
 
 <script setup>
