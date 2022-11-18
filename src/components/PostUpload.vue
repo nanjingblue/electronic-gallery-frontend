@@ -1,16 +1,18 @@
 <template>
-  <TheModal>
+  <TheModal @close="store.commit('changeShowPostUpload', false)">
     <div class="postUpload">
       <label class="upload">
-        <TheIcon icon="upload-image" />
-        <input type="file" accept="image/*" class="fileChooser" />
+        <img v-if="imageObjUrl" :src="imageObjUrl" class="preview" />
+        <TheIcon v-else icon="upload-image" />
+        <input type="file" accept="image/*" class="fileChooser" @change="handleImageUpload"/>
       </label>
       <div class="postContent">
         <textarea
           placeholder="写点什么叭..."
           class="postContentInput"
+          v-model="description"
         ></textarea>
-        <TheButton class="pubBtn">发布</TheButton>
+        <TheButton class="pubBtn" @click="publishPost">发布</TheButton>
       </div>
     </div>
   </TheModal>
@@ -20,6 +22,30 @@
 import TheModal from "./TheModal.vue";
 import TheIcon from "./TheIcon.vue";
 import TheButton from "./TheButton.vue";
+import {useStore} from "vuex";
+import {ref} from "vue";
+
+const store = useStore();
+const imageObjUrl= ref("");
+
+const image = ref(null);
+const description = ref("");
+
+async function handleImageUpload(e) {
+  const imageFile = e.target.files[0];
+  if (imageFile) {
+    imageObjUrl.value = URL.createObjectURL(imageFile);
+    image.value = imageFile;
+  }
+}
+
+function publishPost() {
+  store.dispatch("uploadPost", {
+    image: image.value,
+    description: description.value,
+  });
+}
+
 </script>
 
 <style scoped>

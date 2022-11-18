@@ -7,7 +7,7 @@
     </div>
     <div class="navItems">
       <router-link to="/"><TheIcon icon="home" /></router-link>
-      <button><TheIcon icon="publish" /> </button>
+      <button @click="publishPost()"><TheIcon icon="publish" /> </button>
       <div class="profileDropDown">
         <TheAvatar :width="42" :height="42" style="cursor: pointer"/>
 <!--        <div class="dropdownMenu">-->
@@ -21,13 +21,17 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 import TheIcon from "./TheIcon.vue";
 import TheAvatar from "./TheAvatar.vue";
-export default {
-  name: "NavBar",
-  components: {TheAvatar, TheIcon}
+import {useStore} from "vuex";
+
+const store = useStore()
+
+function publishPost() {
+  store.commit("changeShowPostUpload", true);
 }
+
 </script>
 
 <style scoped>

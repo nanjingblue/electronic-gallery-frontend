@@ -1,24 +1,29 @@
 <template>
   <div>
     <PostList>
-      <PostItem v-for="n in 10" />
+      <PostItem v-for="post in posts" :post="post" :key="post.id" />
     </PostList>
 <!--    <PostDetails />-->
-<!--    <PostUpload />-->
+    <PostUpload v-if="showPostUpload" />
   </div>
 </template>
 
-<script>
+<script setup>
 import PostList from "../components/PostList.vue";
 import PostItem from "../components/PostItem.vue";
 import PostUpload from "../components/PostUpload.vue";
-export default {
-  name: "HomePage",
-  components: {PostUpload, PostItem, PostList}
-}
+import {useStore} from "vuex";
+import {computed, onMounted} from "vue";
+
+const store = useStore();
+const showPostUpload = computed(() => store.state.showPostUpload);
+
+const posts = computed(() => store.state.post.list);
+
+onMounted(() => {
+  store.dispatch("loadAllPosts");
+})
+
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

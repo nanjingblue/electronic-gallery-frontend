@@ -1,7 +1,7 @@
 <template>
   <div class="postItem">
     <img
-        src=""
+        :src=post.image
         alt=""
         width="100%"
         height="100%"
@@ -9,14 +9,16 @@
     />
     <div class="postInfo">
       <div class="postMeta">
-        <TheAvatar />
-        <span>奥特曼</span>
-        <span class="postPubDate">12小时之前发布</span>
+        <TheAvatar :src="post ?.user ?.avatar" />
+        <span>{{ post ?.user ?.name }}</span>
+        <span class="postPubDate">{{
+            dateToRelative(post.publishedAt)
+          }}</span>
         <PostActions />
       </div>
       <div class="postDesc">
         <p>
-          打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。
+          {{ post.description }}
         </p>
       </div>
     </div>
@@ -26,6 +28,13 @@
 <script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import PostActions from "../components/PostActions.vue";
+import {dateToRelative} from "../utils/date.js";
+defineProps({
+  post: {
+    type: Object,
+    default: {},
+  }
+})
 </script>
 
 <style scoped>

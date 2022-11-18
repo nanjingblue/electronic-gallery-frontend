@@ -10,11 +10,13 @@
   <template v-else>
     <router-view></router-view>
   </template>
+  <footer class="footer" :class="{ inside: $route.name === 'login'}">
+    &copy;Njnu. All Rights Reserved.
+  </footer>
 </template>
 
 <script setup>
 import "./assets/base.css"
-import TheIcon from "./components/TheIcon.vue";
 import NavBar from "./components/NavBar.vue";
 import TheLayout from "./components/TheLayout.vue";
 </script>
@@ -23,5 +25,17 @@ import TheLayout from "./components/TheLayout.vue";
 .header{
   height: 80px;
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.footer {
+  text-align: center;
+  padding: 38px 0;
+  color: #828282;
+}
+
+.footer.inside {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 </style>
