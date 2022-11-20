@@ -36,7 +36,6 @@ const description = ref("");
 
 async function handleCoverChoose(e) {
   const imageFile = e.target.files[0];
-  console.log(imageFile)
   if (imageFile) {
     imageObjUrl.value = URL.createObjectURL(imageFile);
     cover.value = imageFile;
@@ -57,13 +56,13 @@ async function GalleryCreate() {
   // req.setRequestHeader('Access-Control-Allow-Origin', '*');
   // req.setRequestHeader("Content-Type", "image/png");
   req.send(cover.value);
-  req.onload = () => {
-    imageObjUrl.value = res.data.get;
-  };
+  // req.onload = () => {
+  //   imageObjUrl.value = res.data.get;
+  // };
 
   await store.dispatch("galleryCreate", {
     galleryName: galleryName.value,
-    coverLink: res.data.get,
+    coverLink: res.data.key,
     description: description.value
   })
 }
