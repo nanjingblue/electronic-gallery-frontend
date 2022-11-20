@@ -4,9 +4,10 @@
     <div class="loginForm">
       <img src="../assets/logo.svg" alt="" />
       <form @submit.prevent>
-        <input type="email" placeholder="邮箱" v-model="email" />
-        <input v-if="!isLogin" type="text" placeholder="用户名" v-model="username" />
+        <input type="text" placeholder="用户名" v-model="username" />
+        <input v-if="!isLogin" type="text" placeholder="昵称：" v-model="nickname" />
         <input type="password" placeholder="密码" v-model="password" />
+        <input v-if="!isLogin" type="password" placeholder="确认密码：" v-model="passwordConfirm" />
         <button type="submit" class="loginButton" @click="isLogin ? login() : register()">
           {{ isLogin ? "登录" : "注册"}}
         </button>
@@ -25,24 +26,33 @@
   import {useStore} from 'vuex';
   import {useRouter} from "vue-router";
 
-  const isLogin = ref(true)
+  let isLogin = ref(true)
 
-  const email = ref("");
   const username = ref("");
+  const nickname = ref("");
   const password = ref("");
+  const passwordConfirm = ref("");
   const agreementChecked = ref(false);
 
   const store = useStore();
   const router = useRouter();
 
   async function register() {
+    if (username.value === " " || nickname.value === " " || password.value === " " || passwordConfirm.value ===  "") {
+      alert("提交不可为空");
+      return
+    }
     if (!agreementChecked.value) {
       alert("请先阅读并同意隐私协议和使用规范");
       return
     }
+    if (password.value !== passwordConfirm.value) {
+      alert("两次密码不一致");
+      return
+    }
     await store.dispatch("registerUser", {
-      email: email.value,
       username: username.value,
+      nickname: nickname.value,
       password: password.value,
     });
     router.replace("/")
@@ -50,7 +60,7 @@
 
   async function login() {
     await store.dispatch("loginUser", {
-      email: email.value,
+      username: username.value,
       password: password.value,
     });
     router.replace("/");

@@ -12,12 +12,12 @@ export const user = {
         },
     },
     actions: {
-        async registerUser({ commit }, { email, username, password }) {
-            const user = await register(email, username, password);
+        async registerUser({ commit }, { username, nickname, password }) {
+            const user = await register(username, nickname, password);
             commit("setUser", user);
         },
-        async loginUser({commit}, {email, password}) {
-            const user = await login(email, password);
+        async loginUser({commit}, {username, password}) {
+            const user = await login(username, password);
             commit("setUser", user);
         },
     },

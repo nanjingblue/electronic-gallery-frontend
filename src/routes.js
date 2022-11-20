@@ -3,13 +3,14 @@ import SearchPage from "./pages/SearchPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import ProfileEdittingPage from "./pages/ProfileEdittingPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
+import GalleryHomePage from "./pages/GalleryHomePage.vue"
 import { createRouter, createWebHistory } from "vue-router";
 import {getJwtToken} from "./apis/auth.js";
 
 const routes = [
     {
-        path: "/",
-        name: "home",
+        path: "/post",
+        name: "post",
         component: HomePage
     },
     {
@@ -32,6 +33,11 @@ const routes = [
         name: "login",
         component: LoginPage
     },
+    {
+        path: "/",
+        name: "gallery",
+        component: GalleryHomePage
+    }
 ];
 
 const router = createRouter({
@@ -44,7 +50,7 @@ router.beforeEach(to => {
         return { name: "login" };
     }
     if (to.name === "login" && getJwtToken()) {
-        return { name: "home" }
+        return { name: "gallery" }
     }
 });
 

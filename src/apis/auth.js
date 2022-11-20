@@ -16,32 +16,31 @@ export function getUser() {
     return JSON.parse(localStorage.getItem("user"));
 }
 
-export async function register(email, username, password) {
-    const result = await request("/api/auth/local/register", {
+export async function register(username, nickname, password) {
+    const result = await request("/api/v1/register", {
         method: "POST",
         auth: false,
         body: {
-            email,
-            username,
-            password,
-            name: username,
+            username: username,
+            nickname: nickname,
+            password: password,
         },
     });
     setJwtToken(result.jwt);
-    saveUser(result.user);
-    return result.user;
+    saveUser(result.data);
+    return result.data;
 }
 
-export async function login(email, password) {
-    const result = await request("/api/auth/local", {
+export async function login(username, password) {
+    const result = await request("/api/v1/login", {
         method: "POST",
         auth: false,
         body: {
-            identifier: email,
-            password,
+            username: username,
+            password: password,
         },
     });
     setJwtToken(result.jwt);
-    saveUser(result.user);
-    return result.user;
+    saveUser(result.data);
+    return result.data;
 }
