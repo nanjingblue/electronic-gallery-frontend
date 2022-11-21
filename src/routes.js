@@ -1,17 +1,28 @@
-import HomePage from "./pages/HomePage.vue";
+import PostPage from "./pages/HomePage.vue";
 import SearchPage from "./pages/SearchPage.vue";
 import ProfilePage from "./pages/ProfilePage.vue";
 import ProfileEdittingPage from "./pages/ProfileEdittingPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import GalleryHomePage from "./pages/GalleryHomePage.vue"
+import PicturePage from "./pages/PicturePage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import {getJwtToken} from "./apis/auth.js";
 
 const routes = [
     {
+        path: "/",
+        name: "gallery",
+        component: GalleryHomePage
+    },
+    {
+        path: "/gallery/:id",
+        name: "picture",
+        component: PicturePage
+    },
+    {
         path: "/post",
         name: "post",
-        component: HomePage
+        component: PostPage
     },
     {
         path: "/search_result",
@@ -33,11 +44,6 @@ const routes = [
         name: "login",
         component: LoginPage
     },
-    {
-        path: "/",
-        name: "gallery",
-        component: GalleryHomePage
-    }
 ];
 
 const router = createRouter({

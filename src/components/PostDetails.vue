@@ -35,15 +35,10 @@
   </TheModal>
 </template>
 
-<script>
-import TheIcon from "./TheIcon.vue";
+<script setup>
 import TheAvatar from "./TheAvatar.vue";
 import PostActions from "./PostActions.vue";
 import TheModal from "./TheModal.vue";
-export default {
-  name: "PostDetails",
-  components: {TheModal, PostActions, TheAvatar, TheIcon}
-}
 </script>
 
 <style scoped>

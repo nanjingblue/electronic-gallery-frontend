@@ -1,17 +1,14 @@
 <template>
   <div>
-    <div class="galleryList">
-      <div class="galleryItem" v-for="gallery in gallerys" :key="gallery.id" @click="intoPicturePage(gallery.id)">
+    <div class="pictureList">
+      <div class="pictureItem" v-for="n in 9">
         <img
-            :src=gallery.cover
+            src=""
             alt=""
             width="100%"
             height="100%"
-            style="background: #eeeeee"
+            style="background: #00c2ff"
         >
-        <div class="galleryName">
-          <span>{{ gallery.galleryName }}</span>
-        </div>
       </div>
     </div>
     <GalleryCreate v-if="showGallery" />
@@ -21,67 +18,42 @@
 <script setup>
 import {useStore} from "vuex";
 import {computed, onMounted} from "vue";
-import GalleryCreate from "../components/GalleryCreate.vue";
-import {useRouter} from "vue-router";
 
-
-const store = useStore();
-const router = useRouter();
-const showGallery = computed(() => store.state.showGalleryCreate);
-const gallerys = computed(() => store.state.gallery.list);
 
 onMounted(() => {
-  store.dispatch("loadAllGallery");
+  // store.dispatch("loadAllGallery");
 })
-
-
-async function intoPicturePage(galleryID) {
-  router.push("/gallery/" + galleryID)
-}
 
 
 </script>
 
 <style scoped>
 
-.galleryList {
+.pictureList {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 48px;
 }
 
-.galleryItem {
+.pictureItem {
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
 }
 
-.galleryItem:hover {
+.pictureItem:hover {
   transform: translateY(-0.5rem) scale(1.0125);
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease-in-out;
 }
 
 
-.galleryList img {
+.pictureList img {
   width: 100%;
   height: 400px;
   object-fit: cover;
   background: #eee;
   cursor: pointer;
 }
-
-.galleryName {
-  padding: 20px;
-  text-align: center;
-}
-
-
-
-
-
-
-
-
 
 .border{
   height: 369px;
