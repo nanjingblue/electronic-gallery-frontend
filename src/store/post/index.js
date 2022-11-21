@@ -4,7 +4,6 @@ export const post = {
     state() {
         return {
             list: [],
-
         }
     },
     mutations: {
@@ -31,8 +30,8 @@ export const post = {
         },
     },
     actions: {
-        async uploadPost({commit, dispatch}, {image, description}) {
-            await createPost(image, description);
+        async uploadPost({commit, dispatch}, {content, path}) {
+            await createPost(content, path);
             dispatch("loadAllPosts")
             // 关闭对话框并清空上传的图片
             commit("changeShowPostUpload", false);

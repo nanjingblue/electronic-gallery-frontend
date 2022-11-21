@@ -9,16 +9,16 @@
     />
     <div class="postInfo">
       <div class="postMeta">
-        <TheAvatar :src="post ?.user ?.avatar" />
-        <span>{{ post ?.user ?.name }}</span>
+        <TheAvatar :src="post ?.postUserAvatar" />
+        <span>{{ post ?.postNickname }}</span>
         <span class="postPubDate">{{
-            dateToRelative(post.publishedAt)
+            post ?.postTime
           }}</span>
         <PostActions />
       </div>
       <div class="postDesc">
         <p>
-          {{ post.description }}
+          {{ post.content }}
         </p>
       </div>
     </div>
@@ -28,7 +28,7 @@
 <script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import PostActions from "../components/PostActions.vue";
-import {dateToRelative} from "../utils/date.js";
+import {dateToRelative, filterTime} from "../utils/date.js";
 defineProps({
   post: {
     type: Object,

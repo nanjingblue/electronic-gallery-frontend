@@ -24,6 +24,7 @@ import TheIcon from "./TheIcon.vue";
 import TheButton from "./TheButton.vue";
 import {useStore} from "vuex";
 import {ref} from "vue";
+import {getUploadToken} from "../apis/upload.js";
 
 const store = useStore();
 const imageObjUrl= ref("");
@@ -39,10 +40,20 @@ async function handleImageUpload(e) {
   }
 }
 
-function publishPost() {
-  store.dispatch("uploadPost", {
-    image: image.value,
-    description: description.value,
+async function publishPost() {
+  const res = await getUploadToken(image.value.name, "post");
+  if (res.code !== 200) {
+    alert("服务器内部错误");
+    return
+  }
+
+  const req = new XMLHttpRequest();
+  req.open('PUT', res.data.put, true);
+  req.send(image.value);
+
+  await store.dispatch("uploadPost", {
+    content: description.value,
+    path: res.data.key,
   });
 }
 
