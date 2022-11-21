@@ -17,7 +17,7 @@ export async function loadGallerys() {
     const response = await request("/api/v1/gallerys");
     return response.data.map((gallery) => ({
         id: gallery ?.id,
-        image: gallery ?.image,
-        name: gallery ?.name,
+        cover: gallery ?.cover,
+        galleryName: gallery ?.gallery_name,
     }));
 }

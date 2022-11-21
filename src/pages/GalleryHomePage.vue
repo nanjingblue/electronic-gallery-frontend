@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="galleryList">
-      <div class="galleryItem" v-for="n in 9">
+      <div class="galleryItem" v-for="gallery in gallerys" :key="gallery.id">
         <img
-            src="http://127.0.0.1:5173/uploads/wallhaven_1p8rk3_2560x1600_4a329c11b2.png"
+            :src=gallery.cover
             alt=""
             width="100%"
             height="100%"
-            style="background: #00c2ff"
+            style="background: #eeeeee"
         >
         <div class="galleryName">
-          <span>奥特曼</span>
+          <span>{{ gallery.galleryName }}</span>
         </div>
       </div>
     </div>
@@ -22,12 +22,17 @@
 import {useStore} from "vuex";
 import {computed, onMounted} from "vue";
 import GalleryCreate from "../components/GalleryCreate.vue";
+
+
 const store = useStore();
+
 const showGallery = computed(() => store.state.showGalleryCreate);
 
 onMounted(() => {
-  store.dispatch("loadAllPosts");
+  store.dispatch("loadAllGallery");
 })
+
+const gallerys = computed(() => store.state.gallery.list);
 
 </script>
 
