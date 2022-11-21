@@ -81,6 +81,7 @@ function publishPost() {
 .postContent {
   display: grid;
 }
+
 .postContentInput {
   border-bottom: none;
   resize: none;

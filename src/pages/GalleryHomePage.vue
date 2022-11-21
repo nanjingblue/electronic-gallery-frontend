@@ -34,9 +34,9 @@ onMounted(() => {
   store.dispatch("loadAllGallery");
 })
 
-
 async function intoPicturePage(galleryID) {
-  router.push("/gallery/" + galleryID)
+  store.state.picture.list = null;
+  await router.push("/gallery/" + galleryID)
 }
 
 

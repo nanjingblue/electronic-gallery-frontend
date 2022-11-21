@@ -1,19 +1,18 @@
 <template>
-  <TheModal @close="store.commit('changeShowGalleryCreate', false)">
+  <TheModal @close="store.commit('changeShowPictureUpload', false)">
     <div class="postUpload">
       <label class="upload">
         <img v-if="imageObjUrl" :src="imageObjUrl" class="preview" />
         <TheIcon v-else icon="upload-image" />
-        <input type="file" accept="image/*" class="fileChooser" @change="handleCoverChoose"/>
+        <input type="file" accept="image/*" class="fileChooser" @change="handlePictureChoose"/>
       </label>
-      <div class="postContent">
-        <input type="text"  placeholder="相册名" v-model="galleryName" />
+      <div class="uploadContent">
         <textarea
             placeholder="写点什么叭..."
             class="postContentInput"
             v-model="description"
         ></textarea>
-        <TheButton class="pubBtn" @click="GalleryCreate">创建</TheButton>
+        <TheButton class="pubBtn" @click="uploadPicture">上传</TheButton>
       </div>
     </div>
   </TheModal>
@@ -26,26 +25,27 @@ import TheButton from "./TheButton.vue";
 import {useStore} from "vuex";
 import {ref} from "vue";
 import {getUploadToken} from "../apis/upload.js";
+import {useRoute} from "vue-router";
 
 const store = useStore();
 const imageObjUrl= ref("");
 
-const cover = ref(null);
-const galleryName = ref("");
+const route = useRoute()
+const image = ref(null);
 const description = ref("");
 
-async function handleCoverChoose(e) {
+async function handlePictureChoose(e) {
   const imageFile = e.target.files[0];
   if (imageFile) {
     imageObjUrl.value = URL.createObjectURL(imageFile);
-    cover.value = imageFile;
+    image.value = imageFile;
   }
-  console.log(cover.value.name)
+  console.log(image.value.name)
+  console.log(route.params.id);
 }
 
-async function GalleryCreate() {
-  const res = await getUploadToken(cover.value.name, "avatar");
-  console.log(res.data.put);
+async function uploadPicture() {
+  const res = await getUploadToken(image.value.name, "picture");
   if (res.code !== 200) {
     alert("服务器内部错误");
     return
@@ -53,17 +53,11 @@ async function GalleryCreate() {
 
   const req = new XMLHttpRequest();
   req.open('PUT', res.data.put, true);
-  // req.setRequestHeader('Access-Control-Allow-Origin', '*');
-  // req.setRequestHeader("Content-Type", "image/png");
-  req.send(cover.value);
-  // req.onload = () => {
-  //   imageObjUrl.value = res.data.get;
-  // };
+  req.send(image.value);
 
-  await store.dispatch("galleryCreate", {
-    galleryName: galleryName.value,
-    coverLink: res.data.key,
-    description: description.value
+  await store.dispatch("uploadPicture", {
+    galleryID: route.params.id,
+    path: res.data.key
   })
 }
 
@@ -100,7 +94,7 @@ async function GalleryCreate() {
   position: absolute;
 }
 
-.postContent {
+.uploadContent {
   display: grid;
 }
 

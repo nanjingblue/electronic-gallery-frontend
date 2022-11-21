@@ -4,6 +4,7 @@
     <div class="searchInput">
       <input type="text" />
       <TheIcon icon="search" />
+<!--      <span>{{$router.currentRoute.name}}</span>-->
     </div>
     <div class="navItems">
       <router-link to="/"><TheIcon icon="home" /></router-link>
@@ -74,6 +75,14 @@ function createGallery() {
   left: 12px;
 }
 
+.searchInput span {
+  width: 100%;
+  padding: 12px 12px 12px 36px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+}
+
 .navItems {
   justify-self: end;
   display: flex;
@@ -126,6 +135,7 @@ function createGallery() {
 .profileMenu a:visited {
   color: initial;
 }
+
 
 
 </style>
