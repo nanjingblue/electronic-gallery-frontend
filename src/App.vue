@@ -8,7 +8,7 @@
     </TheLayout>
   </template>
   <template v-else>
-    <router-view></router-view>
+    <router-view :key="this.$route.name !== undefined ? this.$route.name + + new Date() : this.$route + + new Date() " ></router-view>
   </template>
   <footer class="footer" :class="{ inside: $route.name === 'login'}">
     &copy;Njnu. All Rights Reserved.

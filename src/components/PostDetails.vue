@@ -1,44 +1,71 @@
 <template>
-  <TheModal>
-    <div class="postDetails">
-      <img class="postImage" src="" alt="" />
-      <div class="postMeta">
-        <div class="author">
-          <TheAvatar />
-          <span>奥特曼</span>
-        </div>
-        <pre class="postDesc">
-              打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。打怪兽。
+  <div>
+    <TheModal @close="store.commit('changeShowPostDetails', false)">
+      <div class="postDetails">
+        <img class="postImage" :src="post.image" alt="" />
+        <div class="postMeta">
+          <div class="author">
+            <TheAvatar :src="post ?.postUserAvatar" />
+            <span>{{ post ?.postNickname }}</span>
+          </div>
+          <pre class="postDesc">
+              {{post.content}}
             </pre>
-        <div class="comments">
-          <div class="comment" v-for="n in 10">
-            <TheAvatar />
-            <span class="user">大古</span>
-            <span class="commentDate">1d</span>
-            <p class="commentContent">非常好</p>
+          <div class="comments">
+            <div class="comment" v-for="comment in comments" :key="comment.id">
+              <TheAvatar :src="comment ?.commentUserAvatar"/>
+              <span class="user">{{ comment ?.commentUserNickname }}</span>
+              <span class="commentDate">{{comment ?.commentTime }}</span>
+              <p class="commentContent">{{ comment ?.content }}</p>
+            </div>
+          </div>
+          <div class="actions">
+            <PostActions />
+            <span class="postPubDate">12h</span>
+            <input
+                type="text"
+                name="comment"
+                id=""
+                class="commentInput"
+                placeholder="写一条评论叭~"
+                v-model="content"
+            />
+            <button class="commentPubBtn" @click="addComment">发布</button>
           </div>
         </div>
-        <div class="actions">
-          <PostActions />
-          <span class="postPubDate">12h</span>
-          <input
-              type="text"
-              name="comment"
-              id=""
-              class="commentInput"
-              placeholder="写一条评论叭~"
-          />
-          <button class="commentPubBtn">发布</button>
-        </div>
       </div>
-    </div>
-  </TheModal>
+    </TheModal>
+  </div>
 </template>
 
 <script setup>
 import TheAvatar from "./TheAvatar.vue";
 import PostActions from "./PostActions.vue";
 import TheModal from "./TheModal.vue";
+import {useStore} from "vuex";
+import {ref} from "vue";
+
+const props = defineProps({
+  post: {
+    type: Object,
+    default: {},
+  },
+  comments: {
+    type: Array,
+    default: [],
+  }
+})
+
+const content = ref("");
+const store = useStore();
+
+async function addComment() {
+  await store.dispatch("commentCreate", {
+    postID: props.post.id,
+    content: content.value,
+  })
+}
+
 </script>
 
 <style scoped>

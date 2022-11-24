@@ -28,7 +28,6 @@
 <script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import PostActions from "../components/PostActions.vue";
-import {dateToRelative, filterTime} from "../utils/date.js";
 defineProps({
   post: {
     type: Object,

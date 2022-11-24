@@ -18,7 +18,8 @@ export const store = createStore({
         return {
             showPostUpload: false,
             showGalleryCreate: false,
-            showPictureUpload: false
+            showPictureUpload: false,
+            showPostDetails: false,
         }
     },
     mutations: {
@@ -31,6 +32,9 @@ export const store = createStore({
         changeShowPictureUpload(state, show) {
             state.showPictureUpload = show;
         },
+        changeShowPostDetails(state, show) {
+            state.showPostDetails = show
+        }
     },
     actions: {
     },
