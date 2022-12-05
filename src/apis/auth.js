@@ -44,3 +44,9 @@ export async function login(username, password) {
     saveUser(result.data);
     return result.data;
 }
+
+export async function logout() {
+    await request("/api/v1/user/logout");
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("user");
+}

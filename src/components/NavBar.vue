@@ -12,13 +12,18 @@
 <!--      <button @click="publishPost()"><TheIcon icon="publish" /> </button>-->
       <button @click="createGallery()"><TheIcon icon="publish" /></button>
       <div class="profileDropDown">
-        <TheAvatar :width="42" :height="42" style="cursor: pointer"/>
-<!--        <div class="dropdownMenu">-->
-<!--          <ul class="profileMenu">-->
-<!--            <li><router-link to="/profile">个人主页</router-link></li>-->
-<!--            <li>退出登录</li>-->
-<!--          </ul>-->
-<!--        </div>-->
+        <TheAvatar
+            :width="42"
+            :height="42"
+            style="cursor: pointer"
+            :src="user.avatar"
+        />
+        <div class="dropdownMenu">
+          <ul class="profileMenu">
+            <li><router-link to="/profile">个人主页</router-link></li>
+            <li>退出登录</li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
@@ -28,8 +33,10 @@
 import TheIcon from "./TheIcon.vue";
 import TheAvatar from "./TheAvatar.vue";
 import {useStore} from "vuex";
+import {computed} from "vue";
 
-const store = useStore()
+const store = useStore();
+const user = computed(() => store.state.user.user)
 
 function publishPost() {
   store.commit("changeShowPostUpload", true);

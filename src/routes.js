@@ -5,50 +5,50 @@ import ProfileEdittingPage from "./pages/ProfileEdittingPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import GalleryHomePage from "./pages/GalleryHomePage.vue"
 import PicturePage from "./pages/PicturePage.vue";
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
 import {getJwtToken} from "./apis/auth.js";
 
 const routes = [
     {
         path: "/",
         name: "gallery",
-        component: GalleryHomePage
+        component: () => GalleryHomePage
     },
     {
         path: "/gallery/:id",
         name: "picture",
-        component: PicturePage
+        component: () => PicturePage
     },
     {
         path: "/post",
         name: "post",
-        component: PostPage
+        component: () => PostPage
     },
     {
         path: "/search_result",
         name: "search_result",
-        component: SearchPage
+        component: () => SearchPage
     },
     {
         path: "/profile",
         name: "profile",
-        component: ProfilePage
+        component: () => ProfilePage
     },
     {
         path: "/profile/edit",
         name: "profileEdit",
-        component: ProfileEdittingPage
+        component: () => ProfileEdittingPage
     },
     {
         path: "/login",
         name: "login",
-        component: LoginPage
+        component: () => LoginPage
     },
 ];
 
 const router = createRouter({
     routes: routes,
-    history: createWebHistory(),
+    history: createWebHashHistory(),
 });
 
 router.beforeEach(to => {

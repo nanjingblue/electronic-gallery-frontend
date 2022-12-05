@@ -1,4 +1,4 @@
-import {createPost, favorPost, likePost, loadPosts} from "../../apis/post.js";
+import {collectPost, createPost, likePost, loadPosts} from "../../apis/post.js";
 
 export const post = {
     state() {
@@ -13,20 +13,20 @@ export const post = {
         toggleLike(state, {id, isLike}) {
             const post = state.list.find((post) => post.id === id);
             if (isLike) {
-                post.liked_bies = (post.liked_bies || 0) + 1;
+                post.likes = (post.likes || 0) + 1;
             } else {
-                post.liked_bies--;
+                post.likes--;
             }
             post.likedByMe = isLike;
         },
-        toggleFavor(state, {id, isFavor}) {
+        toggleCollect(state, {id, isFavor}) {
             const post = state.list.find((post) => post.id === id);
-            if (isLike) {
-                post.favored_bies = (post.favored_bies || 0) + 1;
+            if (isFavor) {
+                post.collections = (post.collection || 0) + 1;
             } else {
-                post.favored_bies--;
+                post.collections--;
             }
-            post.favoredByMe = isFavor;
+            post.collectedByMe = isFavor;
         },
     },
     actions: {
@@ -41,13 +41,13 @@ export const post = {
             posts.reverse();
             commit("initializePosts", posts);
         },
-        async toggleLike({commit}, id) {
-            const isLike = await likePost(id);
-            commit("toggleLike", {id, isLike});
+        async toggleLike({commit}, {id}) {
+            const isLiked = await likePost(id);
+            commit("toggleLike", {id, isLiked});
         },
-        async toggleFavor({commit}, id) {
-            const isFavor = await favorPost(id);
-            commit("toggleFavor", {id, isFavor});
+        async toggleCollect({commit}, {id}) {
+            const isCollected = await collectPost(id);
+            commit("toggleCollect", {id, isCollected});
         }
     },
 };

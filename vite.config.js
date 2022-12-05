@@ -9,5 +9,6 @@ export default defineConfig({
       "/api": "http://localhost:8080",
       // "/upload": "http://electronic-gallery.oss-cn-hongkong.aliyuncs.com",
     }
-  }
+  },
+  base:'./'
 })

@@ -14,7 +14,15 @@
         <span class="postPubDate">{{
             post ?.postTime
           }}</span>
-        <PostActions />
+        <PostActions
+            :likes="post.likes"
+            :comments="post.comments"
+            :collections="post.collections"
+            :likedByMe="post.likedByMe"
+            :collectByMe="true"
+            @likeClick="store.dispatch('toggleLike', {id: post.id})"
+            @collectClick="store.dispatch('toggleCollect', {id: post.id})"
+        />
       </div>
       <div class="postDesc">
         <p>
@@ -23,17 +31,22 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import PostActions from "../components/PostActions.vue";
+import {useStore} from "vuex";
 defineProps({
   post: {
     type: Object,
     default: {},
   }
 })
+
+const store = useStore();
+
 </script>
 
 <style scoped>

@@ -2,18 +2,20 @@
   <div class="postActions">
     <TheIcon
         icon="like"
-        @click="likedByMe = !likedByMe"
+        @click.stop="emit('likeClick')"
         :fill="likedByMe ? '#FF3C3C' : 'none'"
         :stroke="likedByMe ? '#FF3C3C' : '#000000'"
     /><span>{{ likes || ""}}</span>
     <TheIcon
-        icon="comment"  fill="none"  stroke="#000000"/><span>{{comments}}</span>
+        icon="comment"
+        fill="none"
+        stroke="#000000"/><span>{{comments || ""}}</span>
     <TheIcon
         icon="favorite"
-        @click="favoredByMe = !favoredByMe"
-        :fill="favoredByMe ? '#FFD12E' : 'none'"
-        :stroke="favoredByMe ? '#FFD12E' : '#000000'"
-    /><span>{{ favors || "" }}</span>
+        @click.stop="emit('collectClick')"
+        :fill="collectByMe ? '#FFD12E' : 'none'"
+        :stroke="collectByMe ? '#FFD12E' : '#000000'"
+    /><span>{{ collections || "" }}</span>
   </div>
 </template>
 
@@ -23,16 +25,17 @@ import TheIcon from "./TheIcon.vue";
 defineProps({
   likes: Number,
   comments: Number,
-  favors: Number,
+  collections: Number,
   likedByMe: Boolean,
-  favoredByMe: Boolean,
+  collectByMe: Boolean,
 });
 
 const emit = defineEmits([
     "likeClick",
     "commentsClick",
-    "favorClick",
+    "collectClick",
 ]);
+
 </script>
 
 <style scoped>

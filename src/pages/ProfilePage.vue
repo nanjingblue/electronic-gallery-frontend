@@ -1,52 +1,106 @@
 <template>
   <div>
     <div class="profileContainer">
-      <TheAvatar :width="186" :height="186" />
+      <TheAvatar :width="186" :height="186" :src="user.avatar" />
       <div class="profile">
         <p class="name">
-          <span>奥特曼</span><router-link to="/profile/edit">编辑个人资料</router-link>
+          <span>{{ user.nickname }}</span>
+          <router-link to="/profile/edit">编辑个人资料</router-link>
         </p>
-        <p class="handle">@aotoman</p>
+        <p class="handle">@{{ user.username }}</p>
         <div class="description">
           <pre>
-            会打怪兽
-            会打怪兽
-            会打怪兽
+            {{ user.description }}
           </pre>
         </div>
-        <p class="website">https://aotman.com</p>
+        <p class="website">{{ user.gender }}</p>
       </div>
     </div>
     <div class="tabs">
-      <div class="tab active">
-        <TheIcon icon="posts" />
-        <p>我的</p>
-      </div>
-      <div class="tab">
-        <TheIcon icon="like" />
-        <p>赞过</p>
-      </div>
-      <div class="tab">
-        <TheIcon icon="favorite" />
-        <p>收藏</p>
+      <div
+        v-for="(tab, index) in tabs"
+        class="tab"
+        :class="{ active: index === currentTab }"
+        :key="index"
+        @click="currentTab = index"
+      >
+        <TheIcon :icon="tab.icon" />
+        <p>{{ tab.label }}</p>
       </div>
     </div>
     <div class="tabContent">
-      <p>162 篇贴子</p>
+      <p>{{ myPosts[currentTab].length }}</p>
       <div class="posts">
-        <img src="" class="postImage" v-for="n in 9" />
+        <img
+            class="postImage"
+            v-for="post in myPosts[currentTab]"
+            :src="post.image"
+            :key="post.id"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import TheIcon from "../components/TheIcon.vue";
-export default {
-  name: "ProfilePage",
-  components: {TheIcon, TheAvatar}
-}
+import {useStore} from "vuex";
+import {computed, reactive, ref, watch} from "vue";
+import {loadPostsByMe, loadPostsCollectedByMe, loadPostsLikedByMe} from "../apis/post.js";
+
+const store = useStore();
+const user = computed(() => store.state.user.user);
+
+const tabs = ref([
+  {
+    label: "我的",
+    icon: "posts",
+  },
+  {
+    label: "赞过",
+    icon: "like",
+  },
+  {
+    label: "收藏",
+    icon: "favorite",
+  }
+])
+
+const currentTab = ref(0);
+
+const myPosts = reactive({
+  0: [],
+  1: [],
+  2: [],
+});
+
+watch(
+    currentTab,
+    async () => {
+      switch (currentTab.value) {
+        case 0:
+          if (myPosts[0].length === 0) {
+            myPosts[0] = await loadPostsByMe();
+          }
+          break;
+        case 1:
+          if (myPosts[1].length === 0) {
+            myPosts[1] = await loadPostsLikedByMe();
+          }
+          break;
+        case 2:
+          if (myPosts[2].length === 0) {
+            myPosts[2] = await loadPostsCollectedByMe();
+          }
+          break;
+        default:
+          return
+      }
+    },
+    { immediate: true }
+)
+
 </script>
 
 <style scoped>

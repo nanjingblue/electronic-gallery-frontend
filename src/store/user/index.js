@@ -20,5 +20,9 @@ export const user = {
             const user = await login(username, password);
             commit("setUser", user);
         },
+        async logoutUser({ commit }) {
+            logout();
+            commit("setUser", {});
+        },
     },
 };
