@@ -1,8 +1,8 @@
 <template>
   <div class="loginPage">
-    <img src="../assets/phone.png" alt="" class="phoneImage" />
+    <img src="../assets/cat.svg" alt="" class="phoneImage" />
     <div class="loginForm">
-      <img src="../assets/logo.svg" alt="" />
+      <img src="../assets/logo.png" style="width: 200px" alt="" />
       <form @submit.prevent>
         <input type="text" placeholder="用户名" v-model="username" />
         <input v-if="!isLogin" type="text" placeholder="昵称：" v-model="nickname" />
@@ -121,8 +121,8 @@ input::placeholder {
 .loginButton {
   background: linear-gradient(
       89.93deg,
-      #00c2ff 0.06%,
-      #0047ff 105.68%
+      #f9a041 0.06%,
+      #fbca94 105.68%
   );
   padding: 12px 0;
   color: white;
@@ -130,7 +130,7 @@ input::placeholder {
 }
 
 .info {
-  color: #1da0ff;
+  color: #f9a041;
   text-align: center;
   cursor: pointer;
 }

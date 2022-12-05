@@ -34,7 +34,7 @@
         <img
             class="postImage"
             v-for="post in myPosts[currentTab]"
-            :src="post.image"
+            :src="post.image ? post.image : '/src/assets/404.png'"
             :key="post.id"
         />
       </div>

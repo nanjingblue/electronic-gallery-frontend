@@ -1,7 +1,7 @@
 <template>
   <div class="postItem">
     <img
-        :src=post.image
+        :src="post.image ? post.image : '/src/assets/404.png'"
         alt=""
         width="100%"
         height="100%"
