@@ -1,7 +1,7 @@
 <template>
   <div>
     <PostList>
-      <PostItem v-for="post in posts" :post="post" :key="post.id" @click="showPostDetails(post)" />
+      <PostItem v-for="post in posts" :post="post" @click="showPostDetails(post)" />
       <PostDetails v-if="showPostDetail" :post="currentPost" :comments="comments.value" :key="this.$route.name !== undefined ? this.$route.name + new Date() : this.$route + new Date() "/>
     </PostList>
     <button class="postPtn" @click="showUploadPost">

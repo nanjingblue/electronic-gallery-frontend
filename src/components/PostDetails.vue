@@ -2,7 +2,7 @@
   <div>
     <TheModal @close="store.commit('changeShowPostDetails', false)">
       <div class="postDetails">
-        <img class="postImage" :src="post.image" alt="" />
+        <img class="postImage" :src="post.image ? post.image : '/src/assets/404.png'" alt="" />
         <div class="postMeta">
           <div class="author">
             <TheAvatar :src="post ?.postUserAvatar" />
@@ -20,8 +20,16 @@
             </div>
           </div>
           <div class="actions">
-            <PostActions />
-            <span class="postPubDate">12h</span>
+            <PostActions
+                :likes="post.likes"
+                :comments="post.comments"
+                :collections="post.collections"
+                :likedByMe="post.likedByMe"
+                :collectByMe="post.collectedByMe"
+                @likeClick="store.dispatch('toggleLike', {id: post.id, isLiked: post.likedByMe})"
+                @collectClick="store.dispatch('toggleCollect', {id: post.id, isCollected: post.collectedByMe})"
+            />
+            <span class="postPubDate">{{ post ?.postTime }}</span>
             <input
                 type="text"
                 name="comment"
@@ -63,7 +71,10 @@ async function addComment() {
   await store.dispatch("commentCreate", {
     postID: props.post.id,
     content: content.value,
-  })
+  });
+  const post = store.state.list.find((post) => post.id === props.post.id);
+  post.comments++;
+  this.$forceUpdate()
 }
 
 </script>

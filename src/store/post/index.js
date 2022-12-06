@@ -1,4 +1,4 @@
-import {collectPost, createPost, likePost, loadPosts} from "../../apis/post.js";
+import {cancelCollectPost, cancelLikePost, collectPost, createPost, likePost, loadPosts} from "../../apis/post.js";
 
 export const post = {
     state() {
@@ -12,11 +12,11 @@ export const post = {
         },
         toggleLike(state, {id, isLike}) {
             const post = state.list.find((post) => post.id === id);
-            if (isLike) {
-                post.likes = (post.likes || 0) + 1;
-            } else {
-                post.likes--;
-            }
+            // if (isLike) {
+            //     post.likes = (post.likes || 0) + 1;
+            // } else {
+            //     post.likes--;
+            // }
             post.likedByMe = isLike;
         },
         toggleCollect(state, {id, isFavor}) {
@@ -32,7 +32,7 @@ export const post = {
     actions: {
         async uploadPost({commit, dispatch}, {content, path}) {
             await createPost(content, path);
-            dispatch("loadAllPosts")
+            dispatch("loadAllPosts");
             // 关闭对话框并清空上传的图片
             commit("changeShowPostUpload", false);
         },
@@ -41,13 +41,15 @@ export const post = {
             posts.reverse();
             commit("initializePosts", posts);
         },
-        async toggleLike({commit}, {id}) {
-            const isLiked = await likePost(id);
-            commit("toggleLike", {id, isLiked});
+        async toggleLike({commit, dispatch}, {id, isLiked}) {
+            isLiked ? await cancelLikePost(id) : await likePost(id);
+            isLiked = !isLiked
+            dispatch("loadAllPosts");
         },
-        async toggleCollect({commit}, {id}) {
-            const isCollected = await collectPost(id);
-            commit("toggleCollect", {id, isCollected});
+        async toggleCollect({commit, dispatch}, {id, isCollected}) {
+            isCollected ? await cancelCollectPost(id) : await collectPost(id);
+            isCollected = !isCollected
+            dispatch("loadAllPosts");
         }
     },
 };

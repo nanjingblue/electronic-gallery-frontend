@@ -19,9 +19,9 @@
             :comments="post.comments"
             :collections="post.collections"
             :likedByMe="post.likedByMe"
-            :collectByMe="true"
-            @likeClick="store.dispatch('toggleLike', {id: post.id})"
-            @collectClick="store.dispatch('toggleCollect', {id: post.id})"
+            :collectByMe="post.collectedByMe"
+            @likeClick="store.dispatch('toggleLike', {id: post.id, isLiked: post.likedByMe})"
+            @collectClick="store.dispatch('toggleCollect', {id: post.id, isCollected: post.collectedByMe})"
         />
       </div>
       <div class="postDesc">

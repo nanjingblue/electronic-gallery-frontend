@@ -38,11 +38,24 @@ export async function likePost(id) {
     return response.data.liked_by_me;
 }
 
+export async function cancelLikePost(id) {
+    const url = "/api/v1/post/cancel_like?post_id=" + id;
+    const resp = await request(url);
+    return resp.data.liked_by_me;
+}
+
 export async function collectPost(id) {
     const url = "/api/v1/post/collect?post_id=" + id;
     const response = await request(url);
     return response.data.collected_by_me;
 }
+
+export async function cancelCollectPost(id) {
+    const url = "/api/v1/post/cancel_collect?post_id=" + id;
+    const response = await request(url);
+    return response.data.collected_by_me;
+}
+
 
 export async function loadPostsByMe() {
     const resp = await request("/api/v1/posts/me");
