@@ -40,8 +40,6 @@ async function handlePictureChoose(e) {
     imageObjUrl.value = URL.createObjectURL(imageFile);
     image.value = imageFile;
   }
-  console.log(image.value.name)
-  console.log(route.params.id);
 }
 
 async function uploadPicture() {
@@ -58,7 +56,7 @@ async function uploadPicture() {
   await store.dispatch("uploadPicture", {
     galleryID: route.params.id,
     path: res.data.key
-  })
+  });
 }
 
 </script>

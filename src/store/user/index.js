@@ -1,4 +1,5 @@
 import {getUser, login, logout, register} from "../../apis/auth.js";
+import {updateUser} from "../../apis/user.js";
 
 export const user = {
     state() {
@@ -24,5 +25,9 @@ export const user = {
             await logout();
             commit("setUser", {});
         },
+        async userUpdate({commit}, {nickname, avatar, description}) {
+            const user = await updateUser(nickname, avatar, description);
+            commit("setUser", user);
+        }
     },
 };

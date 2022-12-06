@@ -2,40 +2,40 @@
   <div>
     <h2 class="title">编辑个人资料</h2>
     <div class="changeAvatar">
-      <TheAvatar :width="48" :height="48" />
+      <TheAvatar :width="48" :height="48" :src="profileData.avatar" />
       <TheButton>修改头像</TheButton>
-      <input type="file" class="inputFile" />
+      <input type="file" class="inputFile" @change="uploadAvatar" />
     </div>
-    <form class="profileForm">
-      <label for="username">用户名：</label>
-      <input type="text" />
-      <label for="name">昵称：</label>
-      <input type="text" />
-      <label for="intro">简介：</label>
-      <input type="text" />
-      <label for="mobilePhone">手机号：</label>
-      <input type="text" />
-      <label>性别：</label>
-      <div class="genderRadios">
-        <input
-            type="radio"
-            name="gender"
-            id="M"
-            value="M"
-        />
-        男
-        <input
-            type="radio"
-            name="gender"
-            id="F"
-            value="F"
-        />
-        女
-      </div>
-      <label for="website">网站：</label>
-      <input type="text" />
+    <form class="profileForm" @submit.prevent="updateUser">
+<!--      <label for="username">用户名：</label>-->
+<!--      <input type="text" />-->
+      <label for="nickname">昵称：</label>
+      <input type="text" v-model="profileData.nickname" />
+      <label for="description">简介：</label>
+      <input type="text" v-model="profileData.description" />
+<!--      <label for="mobilePhone">手机号：</label>-->
+<!--      <input type="text" />-->
+<!--      <label>性别：</label>-->
+<!--      <div class="genderRadios">-->
+<!--        <input-->
+<!--            type="radio"-->
+<!--            name="gender"-->
+<!--            id="M"-->
+<!--            value="M"-->
+<!--        />-->
+<!--        男-->
+<!--        <input-->
+<!--            type="radio"-->
+<!--            name="gender"-->
+<!--            id="F"-->
+<!--            value="F"-->
+<!--        />-->
+<!--        女-->
+<!--      </div>-->
+<!--      <label for="website">网站：</label>-->
+<!--      <input type="text" />-->
       <div class="actions">
-        <TheButton type="reset" reverse>取消</TheButton>
+        <TheButton type="reset" reverse @click.prevent="router.push('/profile')">取消</TheButton>
         <TheButton type="submit">确认</TheButton>
       </div>
     </form>
@@ -45,6 +45,57 @@
 <script setup>
 import TheAvatar from "../components/TheAvatar.vue";
 import TheButton from "../components/TheButton.vue";
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import {computed, reactive, ref} from "vue";
+import {getUploadToken} from "../apis/upload.js";
+
+const store = useStore();
+const router = useRouter();
+
+const user = computed(() => store.state.user.user);
+const profileData = reactive({
+  avatar: user.value.avatar,
+  nickname: user.value.nickname,
+  description: user.value.description,
+  // gender: user.value.sex,
+});
+
+const image = ref("");
+
+async function uploadAvatar(e) {
+  const file = e.target.files[0];
+  profileData.avatar = URL.createObjectURL(file);
+  if (file) {
+    image.value = file;
+  }
+}
+
+async function updateUser() {
+  let key = '';
+  if (image.value) {
+    const res = await getUploadToken(image.value.name, "avatar");
+    if (res.code !== 200) {
+      alert("服务器内部错误");
+      return
+    }
+    const req = new XMLHttpRequest();
+    req.open('PUT', res.data.put, true);
+    key =  res.data.key;
+    req.send(image.value);
+  }
+
+  console.log(profileData.nickname);
+
+  await store.dispatch("userUpdate", {
+    nickname: profileData.nickname,
+    avatar: key,
+    description: profileData.description
+  });
+
+  await router.push("/profile");
+}
+
 </script>
 
 <style scoped>

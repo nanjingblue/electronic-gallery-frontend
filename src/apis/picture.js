@@ -12,6 +12,17 @@ export async function createPicture(galleryID, path) {
     return result.data
 }
 
+export async function deletePicture(pictureID) {
+    const resp = await request("/api/v1/picture", {
+        method: "DELETE",
+        auth: true,
+        body: {
+            picture_id: pictureID
+        }
+    });
+    return resp.code
+}
+
 export async function loadPictures(galleryID) {
     const url = "/api/v1/pictures?gallery_id=" + galleryID;
     const response = await request(url);

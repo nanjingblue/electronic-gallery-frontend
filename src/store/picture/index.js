@@ -1,4 +1,4 @@
-import {createPicture, loadPictures} from "../../apis/picture.js";
+import {createPicture, deletePicture, loadPictures} from "../../apis/picture.js";
 
 export const picture = {
     state() {
@@ -23,5 +23,11 @@ export const picture = {
             posts.reverse();
             commit("initializePictures", posts);
         },
+        async pictureDelete({commit, dispatch}, {galleryID, pictureID}) {
+            const code = await deletePicture(pictureID)
+            if (code === 200) {
+                dispatch("loadAllPictures", {galleryID: galleryID})
+            }
+        }
     },
-};
+}
